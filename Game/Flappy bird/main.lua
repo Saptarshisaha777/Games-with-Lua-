@@ -2,6 +2,7 @@
 push = require "push"
 Class = require 'class'
 require 'Bird'
+require 'Pipe'
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -21,6 +22,9 @@ local GROUND_SCROLL_SPEED = 60
 
 local LOOPING_POINT = 413
 
+local pipes = {}
+local spawnTime = 0
+
 local bird = Bird()
 
 function love.load()
@@ -32,6 +36,8 @@ function love.load()
     resizable = true,
     vsync = true
   })
+
+  math.randomseed(os.time())
 
   -- this keypressed table allows us to collect info if a button is pressed making it aceessable to other classes
   love.keyboard.keysPressed = {}
@@ -48,7 +54,7 @@ function love.keypressed(key)
   -- body...
   love.keyboard.keysPressed[key] = true
   if key == 'escape' then
-      love.event.quit()
+    love.event.quit()
   end
 end
 
@@ -65,21 +71,48 @@ end
 
 
 function love.update(dt)
-   background_scroll = (background_scroll + BACKGROUND_SCROLL_SPEED * dt) % LOOPING_POINT
-   ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+  background_scroll = (background_scroll + BACKGROUND_SCROLL_SPEED * dt) % LOOPING_POINT
+  ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
-   bird:update(dt)
-   love.keyboard.keysPressed = {}
+  -- determining the spawn time of pipes
+  spawnTime = spawnTime + dt
 
+  -- inserting pipe elements in the pipes table
+  if spawnTime > 2 then
+    table.insert(pipes, Pipe())
+    spawnTime = 0
+  end
+
+  bird:update(dt)
+
+  for k, pipe in pairs(pipes) do
+
+    -- updating the x value of each pipe
+    pipe:update(dt)
+
+    -- Removing pipe elements in the pipes table
+    if pipe.x < - pipe.width then
+      table.remove(pipes, k)
+    end
+
+  end
+
+  love.keyboard.keysPressed = {}
 
 end
 
+-- Drawing the Graphic Elements
 function love.draw()
 
   push:start()
 
-  love.graphics.draw(background, -background_scroll, 0)
-  love.graphics.draw(ground, -ground_scroll, VIRTUAL_HEIGHT-16)
+  love.graphics.draw(background, - background_scroll, 0)
+
+  for k, pipe in pairs(pipes) do
+    pipe:render()
+  end
+
+  love.graphics.draw(ground, - ground_scroll, VIRTUAL_HEIGHT - 16)
 
 
   bird:render()
