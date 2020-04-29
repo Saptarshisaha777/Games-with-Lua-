@@ -50,6 +50,7 @@ function PlayState:update(dt)
       if not pPair.scored then
         if (pPair.x + PIPE_WIDTH) < (self.bird.x + BIRD_WIDTH / 2) then
           self.score = self.score + 1
+          sounds['score']:play()
         end
         --pPair.scored = false
       end
@@ -100,8 +101,5 @@ function PlayState:render()
   love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
   self.bird:render()
-  if paused then
-    love.graphics.setFont(mediumFont)
-    love.graphics.printf('Paused', 0, 100, VIRTUAL_WIDTH, 'center')
-  end
+
 end

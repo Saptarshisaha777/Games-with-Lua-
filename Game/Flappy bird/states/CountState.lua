@@ -10,6 +10,7 @@ function CountState:update(dt)
   self.timer = self.timer + dt
   if self.timer > 1 then
     self.count = self.count - 1
+    sounds['count']:play()
     CountState:render()
     if self.count == -1 then
       gStateMachine:change('play')

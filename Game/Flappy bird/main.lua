@@ -77,6 +77,18 @@ function love.load()
   }
   gStateMachine:change('title')
 
+  sounds = {
+    ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
+    ['explosion'] = love.audio.newSource('sounds/explosion.wav', 'static'),
+    ['hurt'] = love.audio.newSource('sounds/hurt.wav', 'static'),
+    ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
+    ['music'] = love.audio.newSource('sounds/marios_way.mp3', 'static'),
+    ['count'] = love.audio.newSource('sounds/count.wav', 'static')
+  }
+
+sounds['music']:setLooping(true)
+sounds['music']:play()
+
   -- this keypressed table allows us to collect info if a button is pressed making it aceessable to other classes
   love.keyboard.keysPressed = {}
 
