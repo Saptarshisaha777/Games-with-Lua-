@@ -24,15 +24,24 @@ function Bird:update(dt)
 
 end
 
-function Bird:collide(paddle)
-  if self.y < VIRTUAL_HEIGHT - 14 and self.y > - 2 then
+function Bird:collides(pipe)
+  if self.y < VIRTUAL_HEIGHT - 15 and self.y > 0 then
     if (self.x + 2) + (self.width - 4) >= pipe.x and self.x + 2 <= pipe.x + PIPE_WIDTH then
       if (self.y + 2) + (self.height - 4) >= pipe.y and self.y + 2 <= pipe.y + PIPE_HEIGHT then
         return true
       end
     end
+  else
+    return true
   end
   return false
+end
+
+function Bird:scores(pipePair)
+  if self.x + self.width/2 > pipePair.x + PIPE_WIDTH then
+    pipePair.scored = true
+  end
+
 end
 
 

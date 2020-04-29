@@ -5,6 +5,14 @@ require 'Bird'
 require 'Pipe'
 require 'PipePair'
 
+require 'StateMachine'
+require 'states/BaseState'
+require 'states/PlayState'
+require 'states/TitleScreenState'
+require 'states/EndState'
+require 'states/CountState'
+
+
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 
@@ -21,8 +29,13 @@ local ground_scroll = 0
 local BACKGROUND_SCROLL_SPEED = 30
 local GROUND_SCROLL_SPEED = 60
 
-local LOOPING_POINT = 413
+local LOOPING_POINT = 413 -- setting the bckground looping pont
 
+--trophies for the winner
+ TROPHY_B = love.graphics.newImage('winnerb.png')
+ TROPHY_S = love.graphics.newImage('winners.png')
+ TROPHY_G = love.graphics.newImage('winnerg.png')
+--[[
 local pipePairs = {}
 local spawnTime = 0
 
@@ -30,10 +43,23 @@ local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
 local bird = Bird()
 
+local scrolling = true
+]]
+
 
 
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
+
+  -- app window title
+  love.window.setTitle('Flappy Bird')
+
+  -- initialize our nice-looking retro text fonts
+  smallFont = love.graphics.newFont('font.ttf', 8)
+  mediumFont = love.graphics.newFont('flappy.ttf', 14)
+  flappyFont = love.graphics.newFont('flappy.ttf', 28)
+  hugeFont = love.graphics.newFont('flappy.ttf', 56)
+  love.graphics.setFont(flappyFont)
 
   push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
     fullscreen = false,
@@ -42,6 +68,14 @@ function love.load()
   })
 
   math.randomseed(os.time())
+
+  gStateMachine = StateMachine {
+    ['title'] = function() return TitleScreenState() end,
+    ['play'] = function() return PlayState() end,
+    ['end'] = function() return EndState() end,
+    ['count'] = function() return CountState() end,
+  }
+  gStateMachine:change('title')
 
   -- this keypressed table allows us to collect info if a button is pressed making it aceessable to other classes
   love.keyboard.keysPressed = {}
@@ -72,40 +106,22 @@ function love.keyboard.wasPressed(key)
 
 end
 
-
+-- the update function for the the entire module
 function love.update(dt)
-  background_scroll = (background_scroll + BACKGROUND_SCROLL_SPEED * dt) % LOOPING_POINT
-  ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
-  -- determining the spawn time of pipes
-  spawnTime = spawnTime + dt
-
-  -- inserting pipe elements in the pipes table( AT RANDOM LOCATION)
-  if spawnTime > math.random(2, 50) then
-
-    local y = math.max(-PIPE_HEIGHT + 10,math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
-    --y = math.min(3 * VIRTUAL_HEIGHT/4, math.max(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90))
-    lastY = y
-    table.insert(pipePairs, PipePair(y))
-    spawnTime = 0
+  -- PAUSING the Game Here
+  if love.keyboard.wasPressed('p') then
+    paused = true
+  elseif love.keyboard.wasPressed('r') then
+    paused = false
   end
 
+  if not paused then
+    background_scroll = (background_scroll + BACKGROUND_SCROLL_SPEED * dt) % LOOPING_POINT
+    ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 
-  for k, pipePair in pairs(pipePairs) do
-    -- updating the x value of each pipe
-    pipePair:update(dt)
+    gStateMachine:update(dt)
   end
-
-  bird:update(dt)
-
-  for k, pipePair in pairs(pipePairs) do
-    -- Removing pipe elements in the pipes table
-    if pipePair.remove then
-      table.remove(pipePairs, k)
-    end
-
-  end
-
   love.keyboard.keysPressed = {}
 
 end
@@ -117,14 +133,22 @@ function love.draw()
 
   love.graphics.draw(background, - background_scroll, 0)
 
-  for k, pipePair in pairs(pipePairs) do
+  gStateMachine:render()
+
+  --[[  for k, pipePair in pairs(pipePairs) do
     pipePair:render()
+  end]]
+  if paused then
+    love.graphics.setFont(hugeFont)
+    love.graphics.printf('Pause', 0, 144-28, VIRTUAL_WIDTH, 'center')
+    love.graphics.setFont(mediumFont)
+    love.graphics.printf('Press [R] to resume', 0, 144+28, VIRTUAL_WIDTH, 'center')
   end
 
   love.graphics.draw(ground, - ground_scroll, VIRTUAL_HEIGHT - 16)
 
 
-  bird:render()
+  --bird:render()
 
   push:finish()
 
