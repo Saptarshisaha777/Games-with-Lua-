@@ -15,6 +15,19 @@ function StartState:update(dt)
     gSounds['paddle-hit']:play()
   end
 
+  if key == 'escape' then
+    love.event.quit()
+  end
+
+
+  if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+    gSounds['confirm']:play()
+
+    if option_no == 0 then
+        gStateMachine:change('play')
+    end
+end
+
   --[[if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
       option_no = option_no == 1 and 2 or 1
       gSounds['paddle-hit']:play()
@@ -35,6 +48,7 @@ function StartState:render(dt)
   if option_no == 0 then
       love.graphics.setColor(0, 255, 255, 255)
   end
+
   love.graphics.printf("START", 0, VIRTUAL_HEIGHT / 2 + 70,
       VIRTUAL_WIDTH, 'center')
 

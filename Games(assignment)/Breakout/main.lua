@@ -1,5 +1,7 @@
 require 'src/Dependencies'
 
+
+-- loading the main with all the global variables
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -16,7 +18,7 @@ function love.load()
   love.graphics.setFont(gFonts['small'])
 
 
-
+-- add the basic textures and Backgrounds for future use
   gTextures = {
     ['background'] = love.graphics.newImage('graphics/background.png'),
     ['main'] = love.graphics.newImage('graphics/breakout.png'),
@@ -25,7 +27,10 @@ function love.load()
     ['particle'] = love.graphics.newImage('graphics/particle.png')
   }
 
-
+-- adding the quad table for all the sprites
+  gFrames = {
+      ['paddles'] = GenerateQuadsPaddles(gTextures['main'])
+  }
 
   gSounds = {
     ['paddle-hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'stream'),
@@ -49,6 +54,7 @@ function love.load()
 
   gStateMachine = StateMachine {
     ['start'] = function() return StartState() end,
+    ['play'] = function() return PlayState() end,
   }
 
   push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -72,9 +78,7 @@ end
 function love.keypressed(key)
   -- body...
   love.keyboard.keysPressed[key] = true
-  if key == 'escape' then
-    love.event.quit()
-  end
+
 end
 
 -- it is needed to check if a specific button is pressed by user by other classes as table values cannot be called directly
