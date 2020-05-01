@@ -12,3 +12,4 @@ require 'src/constants'
 require 'src/Util'
 
 require 'src/Paddle'
+require 'src/Ball'

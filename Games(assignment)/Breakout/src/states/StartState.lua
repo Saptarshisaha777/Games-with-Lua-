@@ -15,7 +15,7 @@ function StartState:update(dt)
     gSounds['paddle-hit']:play()
   end
 
-  if key == 'escape' then
+  if love.keyboard.wasPressed('escape') then
     love.event.quit()
   end
 
