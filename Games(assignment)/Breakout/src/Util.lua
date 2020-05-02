@@ -26,6 +26,12 @@ function table.slice(tbl,first,last,step)
   for i = first or 1, #tbl or last, step or 1 do
     sliced[#sliced + 1] = tbl[i]
   end
+
+  return sliced
+end
+
+function GenerateQuadsBricks(atlas)
+    return table.slice(GenerateQuads(atlas, 32, 16), 1, 21)
 end
 
 
@@ -62,6 +68,12 @@ function GenerateQuadsPaddles(atlas)
 
     return quads
 end
+
+
+
+
+
+
 
 function GenerateQuadsBalls(atlas)
     local x = 96

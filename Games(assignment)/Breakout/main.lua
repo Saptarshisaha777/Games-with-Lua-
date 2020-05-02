@@ -28,10 +28,12 @@ function love.load()
   }
 
 -- adding the quad table for all the sprites
-  gFrames = {
-      ['paddles'] = GenerateQuadsPaddles(gTextures['main']),
-      ['balls'] = GenerateQuadsBalls(gTextures['main'])
-  }
+gFrames = {
+    ['paddles'] = GenerateQuadsPaddles(gTextures['main']),
+    ['balls'] = GenerateQuadsBalls(gTextures['main']),
+    ['bricks'] = GenerateQuadsBricks(gTextures['main'])
+
+}
 
   gSounds = {
     ['paddle-hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'stream'),

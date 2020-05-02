@@ -10,6 +10,8 @@ require 'src/states/PlayState'
 
 require 'src/constants'
 require 'src/Util'
+require 'src/LevelMaker'
 
 require 'src/Paddle'
 require 'src/Ball'
+require 'src/Brick'
