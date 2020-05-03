@@ -1,8 +1,8 @@
 Brick = Class()
 
 function Brick:init(x,y)
-  self.tier = 0
-  self.color = 1
+  self.tier = math.random(0,3)
+  self.color = math.random(1,5)
 
   self.x = x
   self.y = y
