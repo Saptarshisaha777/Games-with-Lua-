@@ -60,6 +60,7 @@ gFrames = {
     ['serve'] = function() return ServeState() end,
     ['play'] = function() return PlayState() end,
     ['game-over'] = function() return GameOverState() end,
+    ['victory'] = function() return VictoryState() end,V
   }
 
   push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {

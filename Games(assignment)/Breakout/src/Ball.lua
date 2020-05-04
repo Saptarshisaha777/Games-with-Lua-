@@ -11,16 +11,21 @@ function Ball:init(skin)
 end
 
 function Ball:collides(target)
-  if self.x > target.x + target.width or self.x + self.side < target.x then
-    return false
+  -- first, check to see if the left edge of either is farther to the right
+      -- than the right edge of the other
+      if self.x > target.x + target.width or target.x > self.x + self.side then
+          return false
+      end
+
+      -- then check to see if the bottom edge of either is higher than the top
+      -- edge of the other
+      if self.y > target.y + target.height or target.y > self.y + self.side then
+          return false
+      end
+
+      -- if the above aren't true, they're overlapping
+      return true
   end
-
- if self.y > target.y + target.width  or self.y + self.side < target.y  then
-   return false
- end
-
- return true
-end
 
 
 function Ball:reset()
