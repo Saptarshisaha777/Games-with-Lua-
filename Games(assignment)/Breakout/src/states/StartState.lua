@@ -3,6 +3,10 @@ StartState = Class{__includes = BaseState}
 local option_no = 0
 local total_option = 2
 
+function StartState:enter(params)
+  self.highScores = params.highScores
+end
+
 function StartState:update(dt)
 
 
@@ -24,13 +28,13 @@ function StartState:update(dt)
     gSounds['confirm']:play()
 
     if option_no == 0 then
-      gStateMachine:change('serve', {
-        paddle = Paddle(1),
-        bricks = LevelMaker.createMap(1),
-        health = 3,
-        score = 0,
-        level = 1,
+      gStateMachine:change('paddle-select', {
+        highScores = self.highScores
       })
+    elseif option_no == 1 then
+      gStateMachine:change('high-scores', {
+                highScores = self.highScores
+            })
     end
   end
 

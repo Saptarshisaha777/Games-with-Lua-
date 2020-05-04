@@ -6,6 +6,7 @@ function PlayState:enter(params)
   self.health = params.health
   self.score = params.score
   self.ball = params.ball
+  self.highScores = params.highScores
   self.level = params.level
 
   -- give ball random starting velocity
@@ -72,7 +73,8 @@ function PlayState:update(dt)
                     paddle = self.paddle,
                     health = self.health,
                     score = self.score,
-                    ball = self.ball
+                    ball = self.ball,
+                    highScores = self.highScores
                 })
             end
 
@@ -131,7 +133,8 @@ function PlayState:update(dt)
 
         if self.health == 0 then
             gStateMachine:change('game-over', {
-                score = self.score
+                score = self.score,
+                highScores = self.highScores
             })
         else
             gStateMachine:change('serve', {
@@ -140,6 +143,7 @@ function PlayState:update(dt)
                 health = self.health,
                 score = self.score,
                 level = self.level,
+                highScores = self.highScores
             })
         end
     end

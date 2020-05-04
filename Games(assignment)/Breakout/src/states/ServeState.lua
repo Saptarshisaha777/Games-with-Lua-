@@ -7,6 +7,7 @@ function ServeState:enter(params)
     self.bricks = params.bricks
     self.health = params.health
     self.score = params.score
+    self.highScores = params.highScores
     self.level = params.level
 
     -- init new ball (random color for fun)
@@ -29,11 +30,14 @@ function ServeState:update(dt)
             score = self.score,
             ball = self.ball,
             level = self.level,
+            highScores = self.highScores
         })
     end
 
     if love.keyboard.wasPressed('escape') then
-        gStateMachine:change('start')
+        gStateMachine:change('start',{
+          highScores = self.highScores
+        })
     end
 end
 
