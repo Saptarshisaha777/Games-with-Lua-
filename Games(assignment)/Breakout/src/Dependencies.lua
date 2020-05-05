@@ -14,6 +14,7 @@ require 'src/states/HighScoreState'
 require 'src/states/EnterHighScoreState'
 
 
+
 require 'src/constants'
 require 'src/Util'
 require 'src/LevelMaker'
@@ -21,3 +22,4 @@ require 'src/LevelMaker'
 require 'src/Paddle'
 require 'src/Ball'
 require 'src/Brick'
+require 'src/Power'

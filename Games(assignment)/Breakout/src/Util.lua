@@ -70,6 +70,11 @@ function GenerateQuadsPaddles(atlas)
 end
 
 
+function GenerateQuadsPower(atlas)
+  return table.slice(GenerateQuads(atlas, 16, 16), 149, 151,1)
+end
+
+
 
 
 
