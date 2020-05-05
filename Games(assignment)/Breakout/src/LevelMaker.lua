@@ -19,6 +19,8 @@ LevelMaker = Class{}
 ]]
 function LevelMaker.createMap(level)
     local bricks = {}
+    -- setting the no. of power ups in a LevelMaker
+    local numPowers = math.min(6, level * 2)
 
     -- randomly choose the number of rows
     local numRows = math.random(1, 5)
@@ -41,6 +43,9 @@ function LevelMaker.createMap(level)
 
         -- whether we want to enable alternating colors for this row
         local alternatePattern = math.random(1, 2) == 1 and true or false
+
+        -- make a random guess to decide if power up should be there
+        local presentPower = true --math.random(1, 13) == 7 and true or false
 
         -- choose two colors to alternate between
         local alternateColor1 = math.random(1, highestColor)
@@ -79,8 +84,14 @@ function LevelMaker.createMap(level)
                 + (13 - numCols) * 16,  -- left-side padding for when there are fewer than 13 columns
 
                 -- y-coordinate
-                y * 16                  -- just use y * 16, since we need top padding anyway
+                y * 16,                  -- just use y * 16, since we need top padding anyway
+                presentPower             -- setting the power offset
             )
+
+            if presentPower and numPowers > 0 then
+              presentPower = false
+              numPowers = numPowers - 1
+            end
 
             -- if we're alternating, figure out which color/tier we're on
             if alternatePattern and alternateFlag then

@@ -1,6 +1,6 @@
 require 'src/Dependencies'
 
-
+ball2 = Ball()
 -- loading the main with all the global variables
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -24,7 +24,7 @@ function love.load()
     ['main'] = love.graphics.newImage('graphics/breakout.png'),
     ['arrows'] = love.graphics.newImage('graphics/arrows.png'),
     ['hearts'] = love.graphics.newImage('graphics/hearts.png'),
-    ['particle'] = love.graphics.newImage('graphics/particle.png')
+    ['particle'] = love.graphics.newImage('graphics/particle.png'),
   }
 
 -- adding the quad table for all the sprites
@@ -33,7 +33,8 @@ gFrames = {
     ['balls'] = GenerateQuadsBalls(gTextures['main']),
     ['bricks'] = GenerateQuadsBricks(gTextures['main']),
     ['arrows'] = GenerateQuads(gTextures['arrows'], 24, 24),
-    ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9)
+    ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9),
+    ['powers'] = GenerateQuadsPower(gTextures['main'])
 }
 
   gSounds = {
